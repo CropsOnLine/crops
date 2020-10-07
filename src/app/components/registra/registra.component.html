@@ -1,0 +1,221 @@
+<div *ngIf="lstCultivosUsu.length > 1" class="col-sm-12 col-md-12 col-lg-12">
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Identificador</th>
+                <th scope="col">Cultivo</th>
+                <th scope="col">Predio</th>
+                <th scope="col">Hubicacion</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of lstCultivosUsu">
+                <th scope="row">{{item.idUsuCultivo}}</th>
+                <td>{{item.nomCultivo}}</td>
+                <td>{{item.nomPredio}}</td>
+                <td>{{item.nomMunicipio}}</td>
+                <td>
+                    <button type="button" class="btn btn-light"><i class="fa fa-bars" aria-hidden="true"
+                            (click)="Ver(item.idUsuCultivo)"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="card">
+    <div class="row card-header row-headerCard">
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <h4>Información Básica</h4>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+            <h5>
+                <label class="st-label">Cultivo:</label>&nbsp;
+                <span id="ubica" class="cab"> {{cultivo.nomCultivo}} </span>&nbsp;&nbsp;&nbsp;
+                <label for="ubica" class="st-label">Predio:</label>&nbsp;
+                <span id="ubica" class="cab"> {{cultivo.nomPredio}} </span>&nbsp;&nbsp;&nbsp;
+                <label for="ubica" class="st-label">Ubicación:</label>&nbsp;
+                <span id="ubica" class="cab"> {{cultivo.nomMunicipio}} - {{cultivo.nomDepartamento}}</span>
+
+            </h5>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <label for="cmbRegistra" class="st-label">Registrar</label>
+                <select class="form-control" id="cmbRegistra" (change)="cmbRegistraChange($event.target.value)">
+                    <option *ngFor="let operacion of lstOperaciones" value={{operacion.id}}>
+                        {{operacion.nombre}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="card" *ngIf="verCompras">
+    <div class="row card-header row-headerCard">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+            <h4>Compras</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-sm-12 col-md-6 col-lg-1">
+                <label class="label-cab" for="txtCantidad">Cantidad</label>
+                <input type="number" class="form-control" id="txtCantidad" #txtCantidad="ngModel"
+                    [(ngModel)]="producto.cantidad">
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-5">
+                <label class="label-cab" for="txtProducto">Descripcion Producto</label>
+                <input type="text" class="form-control" id="txtProducto" #txtProducto="ngModel"
+                    [(ngModel)]="producto.producto">
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2">
+                <label class="label-cab" for="txtValorUnitario">Valor Unidad</label>
+                <input type="number" class="form-control" id="txtValorUnitario" #txtValorUnitario="ngModel"
+                    [(ngModel)]="producto.valUnidad">
+            </div>
+
+            <div class="form-group col-sm-12 col-md-6 col-lg-2"
+                *ngIf="producto.cantidad > 0 && producto.producto.length > 0 &&  producto.valUnidad > 0">
+                <br>
+                <button type="button" class="btn btn-md btn-success" (click)="AddProducto()"><i class="fa fa-plus"
+                        aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <!--Detalle Compra-->
+        <div class="row card-header row-headerCard">
+            <div class="col-sm-12 col-md-6 col-lg-6 text-center">
+                <h4>Detalle Compra</h4>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 text-right">
+                <h4>Total Factura: {{valfactura | currency }}</h4>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Val Unitario</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstMiCompra">
+                            <td>{{item.cantidad}}</td>
+                            <td>{{item.producto}}</td>
+                            <td>{{item.valUnidad | currency }}</td>
+                            <td>
+                                <button type="button" class="btn btn-light">
+                                    <i class="fa fa-trash-o fa-lg" aria-hidden="true"
+                                        (click)="Ver(item.idUsuCultivo)"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" *ngIf="verJornales">
+    <div class="row card-header row-headerCard">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+            <h4>Registro de Obra de Mano</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label for="cmbTipActividad" class="label-cab">Tipo Actividad</label>
+                <select class="form-control" id="cmbTipActividad" #cmbTipActividad="ngModel"
+                    [(ngModel)]="jornales.idActividad">
+                    <option *ngFor="let Actividad of lstActividades" value={{Actividad.id}}>
+                        {{Actividad.nombre}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label for="txtCantDias" class="label-cab">Dias Laborados</label>
+                <input type="number" class="form-control" id="txtCantDias" #txtCantDias="ngModel"
+                    [(ngModel)]="jornales.cantidad">
+            </div>
+
+            <div class="col-sm-12 col-md-2 col-lg-2">
+                <label for="txtValorDia" class="label-cab">Valor Dia</label>
+                <input type="number" class="form-control" id="txtValorDia" #txtValorDia="ngModel"
+                    [(ngModel)]="jornales.valLabor">
+            </div>
+
+            <div class="form-group col-sm-12 col-md-6 col-lg-2"
+                *ngIf="jornales.cantidad > 0 && jornales.idActividad != '0'  &&  jornales.valLabor > 0">
+                <br>
+                <button type="button" class="btn btn-md btn-success" (click)="AddJornal()"><i class="fa fa-plus"
+                        aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!--Detalle jornales-->
+
+    <div class="card" *ngIf="lstObraLabor.length > 0">
+        <div class="row card-header row-headerCard">
+            <div class="col-sm-12 col-md-6 col-lg-6 text-center">
+                <h4>Detalle Jornales</h4>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 text-right">
+                <h4>Valor Jornales: {{valJornales | currency}}</h4>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Labor</th>
+                            <th scope="col">Val Unitario</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstObraLabor">
+                            <td>{{item.cantidad}}</td>
+                            <td>{{item.nombre}}</td>
+                            <td>{{item.valLabor | currency }}</td>
+                            <td>
+                                <button type="button" class="btn btn-md btn-danger">
+                                    <i class="fa fa-trash-o fa-lg" aria-hidden="true"
+                                        (click)="Ver(item.idUsuCultivo)"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>

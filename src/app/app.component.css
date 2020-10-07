@@ -1,0 +1,15 @@
+.menu-active{
+    /*color: #008cba;*/
+    font-weight: 900;
+}
+
+ul li{
+   /* font-weight: unset;*/
+    font-size: medium;
+}
+
+.strong-usu{
+    
+    color: #0079a1 !important;
+    font-size: x-large !important;
+}
